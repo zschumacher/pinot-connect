@@ -8,7 +8,6 @@ from dataclasses import dataclass
 import httpx
 from httpx import _types as httpx_types
 
-
 __all__ = [
     "QueryOption",
     "QueryOptions",
@@ -156,9 +155,9 @@ class ClientOptions:
     cert: httpx_types.CertTypes | None = None
     trust_env: bool = True
     proxy: httpx_types.ProxyTypes | None = None
-    timeout: httpx_types.TimeoutTypes = dataclasses.field(default_factory=lambda :DEFAULT_REQUEST_TIMEOUT)
+    timeout: httpx_types.TimeoutTypes = dataclasses.field(default_factory=lambda: DEFAULT_REQUEST_TIMEOUT)
     follow_redirects: bool = False
-    limits: httpx.Limits = dataclasses.field(default_factory=lambda :DEFAULT_CONNECTION_LIMITS)
+    limits: httpx.Limits = dataclasses.field(default_factory=lambda: DEFAULT_CONNECTION_LIMITS)
     max_redirects: int | None = dataclasses.field(default=DEFAULT_MAX_REDIRECTS)
     transport: httpx.BaseTransport | None = None
     event_hooks: t.Mapping[str, list[t.Callable[..., t.Any]]] | None = None
