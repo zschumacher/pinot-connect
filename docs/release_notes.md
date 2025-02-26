@@ -1,2 +1,2 @@
-## Latest changes
+## Latest Changes
 
