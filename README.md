@@ -1,4 +1,6 @@
-# `pinot-connect`
+# pinot-connect
+
+## Installation
 ```shell
 pip install pinot-connect
 # or
@@ -6,8 +8,6 @@ poetry add pinot-connect
 # or
 uv add pinot-connect
 ```
-
-
 
 ## Overview
 **pinot_connect** is a **DB-API 2.0 compliant** and **statically typed** driver for querying **Apache Pinot** with 
