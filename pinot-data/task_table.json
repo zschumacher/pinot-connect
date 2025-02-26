@@ -1,0 +1,20 @@
+{
+  "tableName": "task",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "replication": "1"
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "REFRESH"
+    }
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "invertedIndexColumns": [
+      "task_id",
+      "owner_id"
+    ]
+  },
+  "tenants": {}
+}

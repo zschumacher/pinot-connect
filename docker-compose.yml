@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: zookeeper:3.9.2
+    container_name: pinot-zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - pinot-network
+    healthcheck:
+      test: ["CMD", "echo", "ruok", "|", "nc", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  controller:
+    image: apachepinot/pinot:latest
+    container_name: pinot-controller
+    command: StartController -configFileName /config/controller.conf -zkAddress pinot-zookeeper:2181
+    ports:
+      - "9000:9000"
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    networks:
+      - pinot-network
+    volumes:
+      - ./pinot-config:/config
+    healthcheck:
+      test: ["CMD", "curl", "-H", "Authorization: Basic dXNlcjpzZWNyZXQ=", "-f", "http://localhost:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  broker:
+    image: apachepinot/pinot:latest
+    container_name: pinot-broker
+    command: StartBroker -configFileName /config/server.conf -zkAddress pinot-zookeeper:2181
+    ports:
+      - "8099:8099"
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      controller:
+        condition: service_healthy
+    networks:
+      - pinot-network
+    volumes:
+      - ./pinot-config:/config
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "echo > /dev/tcp/localhost/8099 && exit 0 || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  server:
+    image: apachepinot/pinot:latest
+    container_name: pinot-server
+    command: StartServer -configFileName /config/server.conf -zkAddress pinot-zookeeper:2181
+    ports:
+      - "8098:8098"
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      controller:
+        condition: service_healthy
+    networks:
+      - pinot-network
+    volumes:
+      - ./pinot-config:/config
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "echo > /dev/tcp/localhost/8098 && exit 0 || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  create-tables:
+    image: python:3.9.21-slim
+    environment:
+      PINOT_HOST: "controller"
+      PYTHONUNBUFFERED: "1"
+    depends_on:
+      controller:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      server:
+        condition: service_healthy
+    networks:
+      - pinot-network
+    volumes:
+      - ./pinot-data:/pinot-data
+    entrypoint: >
+      sh -c "
+      pip install httpx && python pinot-data/create_tables.py
+      "
+
+networks:
+  pinot-network:
+    driver: bridge

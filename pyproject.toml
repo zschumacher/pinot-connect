@@ -1,0 +1,88 @@
+[project]
+name = "pinot-connect"
+version = "0.1.0"
+description = "Statically typed DB-API 2.0 driver for Apache Pinot"
+authors = [
+    { name = "Zach Schumacher", email = "zschu15@gmail.com" }
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.9,<4"
+dependencies = [
+    "httpx (>=0.23.0,<0.29.0)",
+    "orjson (>=3.10.15,<4.0.0)",
+    "ciso8601 (>=2.3.2,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+black = "<24.0.0"  # required for docspec atm
+isort = "^6.0.0"
+mypy = "^1.14.1"
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
+pytest-asyncio = "^0.25.3"
+pytest-vcr = "^1.0.2"
+
+[tool.poetry.group.benchmarking.dependencies]
+pinotdb = "^5.6.0"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.6.5"
+pydoc-markdown = "^4.8.2"
+
+[tool.isort]
+force_grid_wrap = 0
+force_single_line = true
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3
+skip = ["venv", ".venv", "media", "staticfiles"]
+use_parentheses = true
+
+[tool.black]
+line-length = 120
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.circleci
+    | \.git
+    | \.github
+    | \.hg
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | venv
+    | media
+    | staticfiles
+  )/
+)
+'''
+
+[tool.coverage.run]
+omit = [
+    "tests/**"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "@t.overload",
+    "@abstractmethod",
+    "if t.TYPE_CHECKING:",
+    "t.Protocol"
+]

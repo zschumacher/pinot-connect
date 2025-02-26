@@ -1,0 +1,14 @@
+{
+  "tableName": "owner",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "replication": "1"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "invertedIndexColumns": [
+      "owner_id"
+    ]
+  },
+  "tenants": {}
+}

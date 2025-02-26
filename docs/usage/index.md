@@ -1,0 +1,1 @@
+Here are the basic resources you need to start using *pinot_connect*

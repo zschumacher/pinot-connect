@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: '{"sql": "select * from starbucksStores limit 10"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '49'
+      content-type:
+      - application/json
+      host:
+      - localhost:8099
+      user-agent:
+      - python-httpx/0.27.2
+    method: POST
+    uri: http://localhost:8099/query
+  response:
+    body:
+      string: '{"resultTable":{"dataSchema":{"columnNames":["address","lat","location_st_point","lon","name"],"columnDataTypes":["STRING","FLOAT","BYTES","FLOAT","STRING"]},"rows":[["601
+        West Street_601 West 5th Avenue_Anchorage, Alaska 99501_907-277-2477",61.21759,"80c062bc98021f94f1404e9bda0f6b0202",-149.89355,"Starbucks
+        - AK - Anchorage  00001"],["Carrs-Anchorage #1805_1650 W Northern Lights Blvd_Anchorage,
+        Alaska 99503_907-339-0500",61.19534,"80c062bcf9d03b1657404e9900e1d24283",-149.9055,"Starbucks
+        - AK - Anchorage  00002"],["Elmendorf AFB_Bldg 5800 Westover Avenue_Anchorage,
+        Alaska 99506",61.2297,"80c062b81205bc01a3404e9d66cf41f213",-149.7522,"Starbucks
+        - AK - Anchorage  00003"],["Fred Meyer - Anchorage #11_1000 E Northern Lights
+        Blvd_Anchorage, Alaska 995084283_907-264-9600",61.19525,"80c062bba8a42e4812404e98fdf8e9b63d",-149.86433,"Starbucks
+        - AK - Anchorage  00004"],["Fred Meyer - Anchorage #656_2300 Abbott Road_Anchorage,
+        Alaska 99507_907-365-2000",61.137512,"80c062bad0abe9fe36404e919a0b4400e1",-149.83797,"Starbucks
+        - AK - Anchorage  00005"],["Fred Meyer - Anchorage (Dimond) #71_2000 W Dimond
+        Blvd_Anchorage, Alaska 995151400_907-267-6700",61.139946,"80c062bd18cfda9e47404e91e9c50024be",-149.90927,"Starbucks
+        - AK - Anchorage  00006"],["Safeway-Anchorage #1817_7731 E Northern Lights
+        Blvd_Anchorage, Alaska 99504_907-331-1700",61.19533,"80c062b7914ea72d00404e9900a907cba6",-149.73648,"Starbucks
+        - AK - Anchorage  00007"],["Safeway - Anchorage #520_3101 PENLAND PKWY._Anchorage,
+        Alaska 99508",61.2156,"80c062ba467381d7dc404e9b98c7e28241",-149.8211,"Starbucks
+        - AK - Anchorage  00008"],["Safeway-Anchorage #2628_1725 Abbott Rd_Anchorage,
+        Alaska 99507_907-339-2800",61.13806,"80c062bb06d358d808404e91abff624b4f",-149.84459,"Starbucks
+        - AK - Anchorage  00009"],["ANC Anchorage_5000 W. Int''l Airport Rd._Anchorage,
+        Alaska 99502_907-243-4331",61.176693,"80c062bf21bba70a9b404e969de0503750",-149.97287,"Starbucks
+        - AK - Anchorage [A]  00010"]]},"numRowsResultSet":10,"partialResult":false,"exceptions":[],"numGroupsLimitReached":false,"maxRowsInJoinReached":false,"maxRowsInWindowReached":false,"timeUsedMs":14,"stageStats":{"type":"MAILBOX_RECEIVE","executionTimeMs":2,"emittedRows":10,"fanIn":1,"rawMessages":2,"deserializedBytes":2174,"upstreamWaitMs":2,"children":[{"type":"MAILBOX_SEND","executionTimeMs":4,"emittedRows":10,"stage":1,"parallelism":1,"fanOut":1,"rawMessages":2,"serializedBytes":1867,"children":[{"type":"SORT_OR_LIMIT","executionTimeMs":4,"emittedRows":10,"children":[{"type":"MAILBOX_RECEIVE","executionTimeMs":3,"emittedRows":10,"fanIn":1,"inMemoryMessages":2,"upstreamWaitMs":5,"children":[{"type":"MAILBOX_SEND","executionTimeMs":1,"emittedRows":10,"stage":2,"parallelism":1,"fanOut":1,"inMemoryMessages":2,"children":[{"type":"LEAF","table":"starbucksStores","executionTimeMs":3,"emittedRows":10,"numDocsScanned":10,"totalDocs":6443,"numEntriesScannedPostFilter":50,"numSegmentsQueried":1,"numSegmentsProcessed":1,"numSegmentsMatched":1}]}]}]}]}]},"maxRowsInOperator":10,"requestId":"93259971000329829","brokerId":"Broker_172.17.0.2_8000","numDocsScanned":10,"totalDocs":6443,"numEntriesScannedInFilter":0,"numEntriesScannedPostFilter":50,"numServersQueried":0,"numServersResponded":0,"numSegmentsQueried":1,"numSegmentsProcessed":1,"numSegmentsMatched":1,"numConsumingSegmentsQueried":0,"numConsumingSegmentsProcessed":0,"numConsumingSegmentsMatched":0,"minConsumingFreshnessTimeMs":0,"numSegmentsPrunedByBroker":0,"numSegmentsPrunedByServer":0,"numSegmentsPrunedInvalid":0,"numSegmentsPrunedByLimit":0,"numSegmentsPrunedByValue":0,"brokerReduceTimeMs":3,"offlineThreadCpuTimeNs":0,"realtimeThreadCpuTimeNs":0,"offlineSystemActivitiesCpuTimeNs":0,"realtimeSystemActivitiesCpuTimeNs":0,"offlineResponseSerializationCpuTimeNs":0,"realtimeResponseSerializationCpuTimeNs":0,"offlineTotalCpuTimeNs":0,"realtimeTotalCpuTimeNs":0,"explainPlanNumEmptyFilterSegments":0,"explainPlanNumMatchAllFilterSegments":0,"traceInfo":{},"tablesQueried":["starbucksStores"]}'
+    headers:
+      Content-Length:
+      - '3984'
+      Content-Type:
+      - application/json
+      X-Pinot-Error-Code:
+      - '-1'
+    status:
+      code: 200
+      message: OK
+version: 1

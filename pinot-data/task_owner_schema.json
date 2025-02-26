@@ -1,0 +1,21 @@
+{
+  "schemaName": "owner",
+  "dimensionFieldSpecs": [
+    {
+      "name": "owner_id",
+      "dataType": "INT"
+    },
+    {
+      "name": "owner_name",
+      "dataType": "STRING"
+    },
+    {
+      "name": "company",
+      "dataType": "STRING"
+    },
+    {
+      "name": "email",
+      "dataType": "STRING"
+    }
+  ]
+}

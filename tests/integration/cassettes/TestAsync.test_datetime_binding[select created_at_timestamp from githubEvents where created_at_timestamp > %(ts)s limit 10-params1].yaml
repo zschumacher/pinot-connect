@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: '{"sql": "select created_at_timestamp from githubEvents where created_at_timestamp
+      > ''2018-01-01T11:02:00'' limit 10"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '116'
+      content-type:
+      - application/json
+      host:
+      - localhost:8099
+      user-agent:
+      - python-httpx/0.27.2
+    method: POST
+    uri: http://localhost:8099/query
+  response:
+    body:
+      string: '{"resultTable":{"dataSchema":{"columnNames":["created_at_timestamp"],"columnDataTypes":["TIMESTAMP"]},"rows":[["2018-01-01
+        11:02:01.0"],["2018-01-01 11:02:01.0"],["2018-01-01 11:02:01.0"],["2018-01-01
+        11:02:01.0"],["2018-01-01 11:02:02.0"],["2018-01-01 11:02:02.0"],["2018-01-01
+        11:02:02.0"],["2018-01-01 11:02:03.0"],["2018-01-01 11:02:03.0"],["2018-01-01
+        11:02:03.0"]]},"numRowsResultSet":10,"partialResult":false,"exceptions":[],"numGroupsLimitReached":false,"maxRowsInJoinReached":false,"maxRowsInWindowReached":false,"timeUsedMs":84,"stageStats":{"type":"MAILBOX_RECEIVE","executionTimeMs":74,"emittedRows":10,"fanIn":1,"rawMessages":2,"deserializedBytes":510,"upstreamWaitMs":74,"children":[{"type":"MAILBOX_SEND","executionTimeMs":75,"emittedRows":10,"stage":1,"parallelism":1,"fanOut":1,"rawMessages":2,"serializedBytes":197,"children":[{"type":"SORT_OR_LIMIT","executionTimeMs":75,"emittedRows":10,"children":[{"type":"MAILBOX_RECEIVE","executionTimeMs":75,"emittedRows":10,"fanIn":1,"inMemoryMessages":2,"upstreamWaitMs":76,"children":[{"type":"MAILBOX_SEND","executionTimeMs":74,"emittedRows":10,"stage":2,"parallelism":1,"fanOut":1,"inMemoryMessages":2,"children":[{"type":"LEAF","table":"githubEvents","executionTimeMs":148,"emittedRows":10,"numDocsScanned":10,"totalDocs":10000,"numEntriesScannedInFilter":10000,"numEntriesScannedPostFilter":10,"numSegmentsQueried":1,"numSegmentsProcessed":1,"numSegmentsMatched":1}]}]}]}]}]},"maxRowsInOperator":10,"requestId":"93259971000035118","brokerId":"Broker_172.17.0.2_8000","numDocsScanned":10,"totalDocs":10000,"numEntriesScannedInFilter":10000,"numEntriesScannedPostFilter":10,"numServersQueried":0,"numServersResponded":0,"numSegmentsQueried":1,"numSegmentsProcessed":1,"numSegmentsMatched":1,"numConsumingSegmentsQueried":0,"numConsumingSegmentsProcessed":0,"numConsumingSegmentsMatched":0,"minConsumingFreshnessTimeMs":0,"numSegmentsPrunedByBroker":0,"numSegmentsPrunedByServer":0,"numSegmentsPrunedInvalid":0,"numSegmentsPrunedByLimit":0,"numSegmentsPrunedByValue":0,"brokerReduceTimeMs":74,"offlineThreadCpuTimeNs":0,"realtimeThreadCpuTimeNs":0,"offlineSystemActivitiesCpuTimeNs":0,"realtimeSystemActivitiesCpuTimeNs":0,"offlineResponseSerializationCpuTimeNs":0,"realtimeResponseSerializationCpuTimeNs":0,"offlineTotalCpuTimeNs":0,"realtimeTotalCpuTimeNs":0,"explainPlanNumEmptyFilterSegments":0,"explainPlanNumMatchAllFilterSegments":0,"traceInfo":{},"tablesQueried":["githubEvents"]}'
+    headers:
+      Content-Length:
+      - '2450'
+      Content-Type:
+      - application/json
+      X-Pinot-Error-Code:
+      - '-1'
+    status:
+      code: 200
+      message: OK
+version: 1

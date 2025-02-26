@@ -1,0 +1,25 @@
+{
+  "schemaName": "task",
+  "dimensionFieldSpecs": [
+    {
+      "name": "task_id",
+      "dataType": "INT"
+    },
+    {
+      "name": "task_name",
+      "dataType": "STRING"
+    },
+    {
+      "name": "status",
+      "dataType": "STRING"
+    },
+    {
+      "name": "owner_id",
+      "dataType": "INT"
+    },
+    {
+      "name": "due_date",
+      "dataType": "STRING"
+    }
+  ]
+}
