@@ -1,0 +1,38 @@
+name: deploy mkdocs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install poetry
+        env:
+          POETRY_VERSION: "2.0.1"
+        run: |
+          curl -sSL https://install.python-poetry.org | python -
+          poetry config virtualenvs.create false
+
+      - name: Install dependencies
+        run: |
+          poetry install --only docs
+
+      - name: deploy mkdocs
+        run: |
+          git config --global user.email "zschu15@gmail.com"
+          git config --global user.name "zschumacher"
+          git remote set-url origin 'https://${{ secrets.GITHUB_TOKEN }}@github.com/zschumacher/pinot-connect.git'
+          poetry run mkdocs gh-deploy -m "Deployed {sha} with MkDocs version: {version}" --force

@@ -1,0 +1,47 @@
+name: unit-tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.9', '3.10', '3.11', '3.12', '3.13' ]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: install poetry
+        env:
+          POETRY_VERSION: "2.0.1"
+        run: |
+          curl -sSL https://install.python-poetry.org | python -
+          poetry config virtualenvs.create false
+
+      - name: install dependencies
+        run: poetry install
+
+      - name: test
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+        run: poetry run pytest --cov=. -v --durations=25 --cov-report=xml tests/unit
+
+      - uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: true
+          flags: ${{ matrix.python-version}}
+          token: ${{ secrets.CODECOV_TOKEN }}
