@@ -1,0 +1,34 @@
+name: publish to pypi
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: dump github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - uses: actions/checkout@v4
+
+      - name: set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: install poetry
+        env:
+          POETRY_VERSION: "2.0.1"
+        run: curl -sSL https://install.python-poetry.org | python -
+
+      - name: publish
+        run: poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN }}
+
+      - name: dump github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
