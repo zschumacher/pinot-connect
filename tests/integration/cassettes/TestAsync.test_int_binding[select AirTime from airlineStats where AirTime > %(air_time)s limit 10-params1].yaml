@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: '{"sql": "select AirTime from airlineStats where AirTime > 200 limit 10"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '72'
+      content-type:
+      - application/json
+      host:
+      - localhost:8099
+      user-agent:
+      - python-httpx/0.27.2
+    method: POST
+    uri: http://localhost:8099/query?queryOptions=
+  response:
+    body:
+      string: '{"resultTable":{"dataSchema":{"columnNames":["AirTime"],"columnDataTypes":["INT"]},"rows":[[260],[201],[248],[260],[253],[202],[229],[242],[319],[282]]},"numRowsResultSet":10,"partialResult":false,"exceptions":[],"numGroupsLimitReached":false,"maxRowsInJoinReached":false,"maxRowsInWindowReached":false,"timeUsedMs":59,"stageStats":{"type":"MAILBOX_RECEIVE","executionTimeMs":14,"emittedRows":10,"fanIn":1,"rawMessages":2,"deserializedBytes":451,"upstreamWaitMs":14,"children":[{"type":"MAILBOX_SEND","executionTimeMs":29,"emittedRows":10,"stage":1,"parallelism":1,"fanOut":1,"rawMessages":2,"serializedBytes":138,"children":[{"type":"SORT_OR_LIMIT","executionTimeMs":27,"emittedRows":10,"children":[{"type":"MAILBOX_RECEIVE","executionTimeMs":26,"emittedRows":10,"fanIn":1,"inMemoryMessages":2,"upstreamWaitMs":27,"children":[{"type":"MAILBOX_SEND","executionTimeMs":22,"emittedRows":10,"stage":2,"parallelism":1,"fanOut":1,"inMemoryMessages":2,"children":[{"type":"LEAF","table":"airlineStats","executionTimeMs":40,"emittedRows":10,"numDocsScanned":50,"totalDocs":9746,"numEntriesScannedInFilter":1280,"numEntriesScannedPostFilter":50,"numSegmentsQueried":31,"numSegmentsProcessed":31,"numSegmentsMatched":5}]}]}]}]}]},"maxRowsInOperator":10,"requestId":"93259971000000001","brokerId":"Broker_172.17.0.2_8000","numDocsScanned":50,"totalDocs":9746,"numEntriesScannedInFilter":1280,"numEntriesScannedPostFilter":50,"numServersQueried":0,"numServersResponded":0,"numSegmentsQueried":31,"numSegmentsProcessed":31,"numSegmentsMatched":5,"numConsumingSegmentsQueried":0,"numConsumingSegmentsProcessed":0,"numConsumingSegmentsMatched":0,"minConsumingFreshnessTimeMs":0,"numSegmentsPrunedByBroker":0,"numSegmentsPrunedByServer":0,"numSegmentsPrunedInvalid":0,"numSegmentsPrunedByLimit":0,"numSegmentsPrunedByValue":0,"brokerReduceTimeMs":16,"offlineThreadCpuTimeNs":0,"realtimeThreadCpuTimeNs":0,"offlineSystemActivitiesCpuTimeNs":0,"realtimeSystemActivitiesCpuTimeNs":0,"offlineResponseSerializationCpuTimeNs":0,"realtimeResponseSerializationCpuTimeNs":0,"offlineTotalCpuTimeNs":0,"realtimeTotalCpuTimeNs":0,"explainPlanNumEmptyFilterSegments":0,"explainPlanNumMatchAllFilterSegments":0,"traceInfo":{},"tablesQueried":["airlineStats"]}'
+    headers:
+      Content-Length:
+      - '2230'
+      Content-Type:
+      - application/json
+      X-Pinot-Error-Code:
+      - '-1'
+    status:
+      code: 200
+      message: OK
+version: 1
