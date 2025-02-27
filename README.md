@@ -30,7 +30,7 @@ expect to see ~15-30% faster execution.
 
 ---
 ## Documentation
-The full documentation can be found [here]().
+The full documentation can be found [here](https://www.pinot-connect.org).
 
 ---
 ## Quickstart
@@ -88,13 +88,13 @@ asyncio.run(main())
 - **Row Factories**  
   The `row_factory` parameter lets you customize how rows are returned. In this example, `dict_row` returns results as
   dictionaries. You can choose from built-in factories or define your own. See the 
-  [**row factories documentation**](usage/row_factories.md) for details.
+  [**row factories documentation**](https://www.pinot-connect.org/usage/row_factories/) for details.
 
 - **Type Mapping**  
   `pinot_connect` automatically converts Pinot data types to their Python equivalents. More details are available in the 
-  [**type conversion documentation**](usage/type_conversion.md).
+  [**type conversion documentation**](https://www.pinot-connect.org/usage/basic/#converting-types).
 
 - **Cursor Iteration & Fetch Methods**  
   You can iterate over results directly or use `fetchone()`, `fetchmany()`, `fetchall()`, and `scroll()`, following the 
-  DB-API spec. See the [**usage docs**](usage) or [**reference docs**](reference/cursor.md) for more details.
+  DB-API spec. See the [**usage docs**](https://www.pinot-connect.org/usage/) or [**reference docs**](https://www.pinot-connect.org/reference/) for more details.
 
