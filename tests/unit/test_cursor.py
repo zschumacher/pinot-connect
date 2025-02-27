@@ -15,6 +15,8 @@ from pinot_connect._result_set import ResultSet
 from pinot_connect.cursor import AsyncCursor
 from pinot_connect.cursor import BaseCursor
 from pinot_connect.cursor import Cursor
+from pinot_connect.cursor import QueryStatistics
+from pinot_connect.cursor import _make_query_statistics
 from pinot_connect.exceptions import DatabaseError
 from pinot_connect.exceptions import NotSupportedError
 from pinot_connect.exceptions import OperationalError
@@ -57,6 +59,61 @@ def async_cursor(mock_async_connection):
     return AsyncCursor(connection=mock_async_connection, row_factory=lambda x: x)
 
 
+def test_make_query_statistics():
+    r = {
+        "resultTable": {"dataSchema": {"columnNames": ["AirTime"], "columnDataTypes": ["INT"]}, "rows": [[359]]},
+        "numRowsResultSet": 1,
+        "partialResult": False,
+        "exceptions": [],
+        "numGroupsLimitReached": False,
+        "maxRowsInJoinReached": False,
+        "maxRowsInWindowReached": False,
+        "timeUsedMs": 20,
+        "stageStats": {},
+        "maxRowsInOperator": 1,
+        "requestId": "93259971000000011",
+        "brokerId": "Broker_172.17.0.2_8000",
+        "numDocsScanned": 1,
+        "totalDocs": 9746,
+        "numEntriesScannedInFilter": 0,
+        "numEntriesScannedPostFilter": 1,
+        "numServersQueried": 0,
+        "numServersResponded": 0,
+        "numSegmentsQueried": 31,
+        "numSegmentsProcessed": 1,
+        "numSegmentsMatched": 1,
+        "numConsumingSegmentsQueried": 0,
+        "numConsumingSegmentsProcessed": 0,
+        "numConsumingSegmentsMatched": 0,
+        "minConsumingFreshnessTimeMs": 0,
+        "numSegmentsPrunedByBroker": 0,
+        "numSegmentsPrunedByServer": 30,
+        "numSegmentsPrunedInvalid": 0,
+        "numSegmentsPrunedByLimit": 30,
+        "numSegmentsPrunedByValue": 0,
+        "brokerReduceTimeMs": 3,
+        "offlineThreadCpuTimeNs": 0,
+        "realtimeThreadCpuTimeNs": 0,
+        "offlineSystemActivitiesCpuTimeNs": 0,
+        "realtimeSystemActivitiesCpuTimeNs": 0,
+        "offlineResponseSerializationCpuTimeNs": 0,
+        "realtimeResponseSerializationCpuTimeNs": 0,
+        "offlineTotalCpuTimeNs": 0,
+        "realtimeTotalCpuTimeNs": 0,
+        "explainPlanNumEmptyFilterSegments": 0,
+        "explainPlanNumMatchAllFilterSegments": 0,
+        "traceInfo": {},
+        "tablesQueried": ["airlineStats"],
+    }
+    qs = _make_query_statistics(r)
+    assert "resultTable" not in qs
+    assert "execptions" not in qs
+    del r["resultTable"]
+    del r["exceptions"]
+    for k, v in qs.items():
+        assert r[k] == v
+
+
 class TestBaseCursor:
     def test_initialization(self, base_cursor, mock_connection):
         assert base_cursor._connection == mock_connection
@@ -75,6 +132,11 @@ class TestBaseCursor:
         assert base_cursor.rowcount == base_cursor._result_set.rowcount
         assert base_cursor.rownumber == base_cursor._result_set.rownumber
         assert base_cursor.arraysize == base_cursor._result_set.arraysize
+
+        assert base_cursor.query_statistics is None
+        base_cursor._last_query_statistics = {"foo": "bar"}
+        assert base_cursor.query_statistics == {"foo": "bar"}
+
         assert base_cursor.query is None
         base_cursor._last_query = Query("SELECT * FROM table")
         assert base_cursor.query == "SELECT * FROM table"
@@ -133,6 +195,11 @@ class TestBaseCursor:
         response.text = "Query error"
         with pytest.raises(ProgrammingError, match="Query error"):
             base_cursor._handle_query_http_error_code(response)
+
+    def test_check_servers_responded(self, base_cursor):
+        r = {"numServersQueried": 1, "numServersResponded": 0}
+        with pytest.raises(DatabaseError, match="Queried 1 server\(s\), but 0 responded"):
+            base_cursor._check_servers_responded(r)
 
     def test_close(self, base_cursor, mock_connection):
         base_cursor._close()

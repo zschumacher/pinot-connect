@@ -3,6 +3,7 @@ from .connection import AsyncConnection
 from .connection import Connection
 from .cursor import AsyncCursor
 from .cursor import Cursor
+from .cursor import QueryStatistics
 from .exceptions import DatabaseError
 from .exceptions import DataError
 from .exceptions import Error

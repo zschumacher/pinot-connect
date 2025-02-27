@@ -2,6 +2,67 @@
 
 # pinot\_connect.cursor
 
+<a id="pinot_connect.cursor.QueryStatistics"></a>
+
+---
+## QueryStatistics
+
+```python
+class QueryStatistics(t.TypedDict)
+```
+
+TypedDict for exposing query statistics for the last executed query
+
+This exposes relevant statistics and metrics from the query execution reported
+by the Pinot broker, including server-side performance, pruning details, and
+total rows/documents processed.
+
+**Attributes**:
+
+- `brokerId` - The ID of the broker that executed this query.
+- `brokerReduceTimeMs` - The time taken by the broker to reduce the results from servers, expressed in milliseconds.
+- `explainPlanNumEmptyFilterSegments` - Number of segments skipped due to empty filter matches in the explain plan.
+- `explainPlanNumMatchAllFilterSegments` - Number of segments where all rows matched due to 'match-all' filter in the explain plan.
+- `maxRowsInJoinReached` - Indicates if the query processing hit the maximum number of rows allowed in a join operation.
+- `maxRowsInOperator` - The maximum number of rows processed by any operator during query execution.
+- `maxRowsInWindowReached` - Indicates if the maximum number of rows were hit in any window function during execution.
+- `minConsumingFreshnessTimeMs` - The minimum freshness time in milliseconds of consuming (real-time) segments.
+- `numConsumingSegmentsMatched` - The number of consuming (real-time) segments that matched the query criteria.
+- `numConsumingSegmentsProcessed` - The number of consuming (real-time) segments that were processed during query execution.
+- `numConsumingSegmentsQueried` - The number of consuming (real-time) segments queried during the execution.
+- `numDocsScanned` - The total number of documents (rows) scanned in the query.
+- `numEntriesScannedInFilter` - The total number of entries scanned by filter operations during the query.
+- `numEntriesScannedPostFilter` - The total number of entries scanned after applying filter operations.
+- `numGroupsLimitReached` - Indicates if the limit on the number of groups in the GROUP BY clause was reached.
+- `numRowsResultSet` - The total number of rows returned in the query result set.
+- `numSegmentsMatched` - The total number of segments that matched the query criteria.
+- `numSegmentsProcessed` - The total number of segments processed by the servers during query processing.
+- `numSegmentsPrunedByBroker` - The number of segments that were pruned (skipped) by the broker.
+- `numSegmentsPrunedByLimit` - The number of segments pruned due to query limits (e.g., TOP N queries).
+- `numSegmentsPrunedByServer` - The number of segments pruned by the servers during query execution.
+- `numSegmentsPrunedByValue` - The number of segments pruned based on the value range (e.g., partitioning or pruning on primary keys).
+- `numSegmentsPrunedInvalid` - The number of invalid or unnecessary segments pruned by the broker or server.
+- `numSegmentsQueried` - The number of segments queried during the execution.
+- `numServersQueried` - The number of servers queried by the broker for this request.
+- `numServersResponded` - The number of servers that successfully responded with query results.
+- `offlineResponseSerializationCpuTimeNs` - CPU time spent in serializing offline segment responses, in nanoseconds.
+- `offlineSystemActivitiesCpuTimeNs` - Total CPU time spent in system activities related to offline segments, in nanoseconds.
+- `offlineThreadCpuTimeNs` - Total thread CPU time spent in processing offline segments, in nanoseconds.
+- `offlineTotalCpuTimeNs` - Total CPU time including query processing for offline segments, in nanoseconds.
+- `partialResult` - Indicates if the result is partial (e.g., due to query timeouts or server issues).
+- `realtimeResponseSerializationCpuTimeNs` - CPU time spent serializing real-time segment responses, in nanoseconds.
+- `realtimeSystemActivitiesCpuTimeNs` - Total CPU time spent in system activities for real-time segments, in nanoseconds.
+- `realtimeThreadCpuTimeNs` - Total thread CPU time spent in processing real-time segments, in nanoseconds.
+- `realtimeTotalCpuTimeNs` - Total CPU time including query processing for real-time segments, in nanoseconds.
+- `requestId` - The unique identifier for the query request.
+- `segmentStatistics` - A list of segment-level statistics for query execution.
+- `stageStats` - A dictionary containing stage-specific statistics for multi-stage queries.
+- `stateStats` - A dictionary containing state-specific statistics for query execution.
+- `tablesQueried` - A list of table names that were queried.
+- `timeUsedMs` - The total time taken to execute the query, in milliseconds.
+- `totalDocs` - The total number of documents in the queried segments.
+- `traceInfo` - A dictionary containing tracing information for the query execution.
+
 <a id="pinot_connect.cursor.BaseCursor"></a>
 
 ---
@@ -90,6 +151,17 @@ def query() -> str | None
 ```
 
 Last executed query
+
+<a id="pinot_connect.cursor.BaseCursor.query_statistics"></a>
+
+#### query\_statistics
+
+```python
+@property
+def query_statistics() -> QueryStatistics | None
+```
+
+Statistics about the last executed query
 
 <a id="pinot_connect.cursor.BaseCursor.mogrify"></a>
 
