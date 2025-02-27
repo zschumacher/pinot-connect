@@ -1,3 +1,10 @@
+[![codecov](https://codecov.io/gh/zschumacher/pinot-connect/graph/badge.svg?token=bQLhy9S1GT)](https://codecov.io/gh/zschumacher/pinot-connect)
+[![unit-tests](https://github.com/zschumacher/pinot-connect/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/zschumacher/pinot-connect/actions/workflows/unit-tests.yml)
+[![integration-tests](https://github.com/zschumacher/pinot-connect/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/zschumacher/pinot-connect/actions/workflows/integration-tests.yml)
+[![pages-build-deployment](https://github.com/zschumacher/pinot-connect/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/zschumacher/pinot-connect/actions/workflows/pages/pages-build-deployment)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
 !!! note ""
     === "pip"
         ```shell
@@ -87,9 +94,8 @@ asynchronous usage.
   [**row factories documentation**](usage/row_factories.md) for details.
 
 - **Type Mapping**  
-  `pinot_connect` automatically converts Pinot data types to their Python equivalents. More details are available in the 
-  [**type conversion documentation**](usage/type_conversion.md).
+  `pinot_connect` automatically converts Pinot data types to their Python equivalents.
 
 - **Cursor Iteration & Fetch Methods**  
   You can iterate over results directly or use `fetchone()`, `fetchmany()`, `fetchall()`, and `scroll()`, following the 
-  DB-API spec. See the [**usage docs**](usage) or [**reference docs**](reference/cursor.md) for more details.
+  DB-API spec. See the [**usage docs**](usage/index.md) or [**reference docs**](reference/cursor.md) for more details.

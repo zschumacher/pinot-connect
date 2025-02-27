@@ -15,7 +15,7 @@ from .options import ClientOptions
 from .options import QueryOptions
 from .options import RequestOptions
 
-connect = Connection.connect
+connect = Connection.connect  # pointer to pypinot.Connection.connect
 
 apilevel = "2.0"  # implements dbapi spec 2.0
 threadsafety = 2  # threads may share module and connections, NOT cursors

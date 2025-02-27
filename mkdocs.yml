@@ -19,6 +19,8 @@ nav:
 
 theme:
   name: 'material'
+  logo: static/pinot-logo.png
+  favicon: static/favicon-32x32.png
   features:
     - navigation.footer
     - navigation.indexes
