@@ -22,7 +22,7 @@ from .options import RequestOptions
 from .rows import RowFactory
 from .rows import RowType
 
-__all__ = ["BaseCursor", "Cursor", "AsyncCursor"]
+__all__ = ["BaseCursor", "Cursor", "AsyncCursor", "QueryStatistics"]
 
 if t.TYPE_CHECKING:
     from .connection import AsyncConnection
@@ -30,6 +30,109 @@ if t.TYPE_CHECKING:
     from .connection import Connection
 
 _ConnectionType = t.TypeVar("_ConnectionType", bound="BaseConnection")
+
+
+class QueryStatistics(t.TypedDict):
+    """TypedDict for exposing query statistics for the last executed query
+
+    This exposes relevant statistics and metrics from the query execution reported
+    by the Pinot broker, including server-side performance, pruning details, and
+    total rows/documents processed.
+
+    Attributes:
+        brokerId: The ID of the broker that executed this query.
+        brokerReduceTimeMs: The time taken by the broker to reduce the results from servers, expressed in milliseconds.
+        explainPlanNumEmptyFilterSegments: Number of segments skipped due to empty filter matches in the explain plan.
+        explainPlanNumMatchAllFilterSegments: Number of segments where all rows matched due to 'match-all' filter in the explain plan.
+        maxRowsInJoinReached: Indicates if the query processing hit the maximum number of rows allowed in a join operation.
+        maxRowsInOperator: The maximum number of rows processed by any operator during query execution.
+        maxRowsInWindowReached: Indicates if the maximum number of rows were hit in any window function during execution.
+        minConsumingFreshnessTimeMs: The minimum freshness time in milliseconds of consuming (real-time) segments.
+        numConsumingSegmentsMatched: The number of consuming (real-time) segments that matched the query criteria.
+        numConsumingSegmentsProcessed: The number of consuming (real-time) segments that were processed during query execution.
+        numConsumingSegmentsQueried: The number of consuming (real-time) segments queried during the execution.
+        numDocsScanned: The total number of documents (rows) scanned in the query.
+        numEntriesScannedInFilter: The total number of entries scanned by filter operations during the query.
+        numEntriesScannedPostFilter: The total number of entries scanned after applying filter operations.
+        numGroupsLimitReached: Indicates if the limit on the number of groups in the GROUP BY clause was reached.
+        numRowsResultSet: The total number of rows returned in the query result set.
+        numSegmentsMatched: The total number of segments that matched the query criteria.
+        numSegmentsProcessed: The total number of segments processed by the servers during query processing.
+        numSegmentsPrunedByBroker: The number of segments that were pruned (skipped) by the broker.
+        numSegmentsPrunedByLimit: The number of segments pruned due to query limits (e.g., TOP N queries).
+        numSegmentsPrunedByServer: The number of segments pruned by the servers during query execution.
+        numSegmentsPrunedByValue: The number of segments pruned based on the value range (e.g., partitioning or pruning on primary keys).
+        numSegmentsPrunedInvalid: The number of invalid or unnecessary segments pruned by the broker or server.
+        numSegmentsQueried: The number of segments queried during the execution.
+        numServersQueried: The number of servers queried by the broker for this request.
+        numServersResponded: The number of servers that successfully responded with query results.
+        offlineResponseSerializationCpuTimeNs: CPU time spent in serializing offline segment responses, in nanoseconds.
+        offlineSystemActivitiesCpuTimeNs: Total CPU time spent in system activities related to offline segments, in nanoseconds.
+        offlineThreadCpuTimeNs: Total thread CPU time spent in processing offline segments, in nanoseconds.
+        offlineTotalCpuTimeNs: Total CPU time including query processing for offline segments, in nanoseconds.
+        partialResult: Indicates if the result is partial (e.g., due to query timeouts or server issues).
+        realtimeResponseSerializationCpuTimeNs: CPU time spent serializing real-time segment responses, in nanoseconds.
+        realtimeSystemActivitiesCpuTimeNs: Total CPU time spent in system activities for real-time segments, in nanoseconds.
+        realtimeThreadCpuTimeNs: Total thread CPU time spent in processing real-time segments, in nanoseconds.
+        realtimeTotalCpuTimeNs: Total CPU time including query processing for real-time segments, in nanoseconds.
+        requestId: The unique identifier for the query request.
+        segmentStatistics: A list of segment-level statistics for query execution.
+        stageStats: A dictionary containing stage-specific statistics for multi-stage queries.
+        stateStats: A dictionary containing state-specific statistics for query execution.
+        tablesQueried: A list of table names that were queried.
+        timeUsedMs: The total time taken to execute the query, in milliseconds.
+        totalDocs: The total number of documents in the queried segments.
+        traceInfo: A dictionary containing tracing information for the query execution.
+    """
+
+    brokerId: str
+    brokerReduceTimeMs: int
+    explainPlanNumEmptyFilterSegments: int
+    explainPlanNumMatchAllFilterSegments: int
+    maxRowsInJoinReached: bool
+    maxRowsInOperator: int
+    maxRowsInWindowReached: bool
+    minConsumingFreshnessTimeMs: int
+    numConsumingSegmentsMatched: int
+    numConsumingSegmentsProcessed: int
+    numConsumingSegmentsQueried: int
+    numDocsScanned: int
+    numEntriesScannedInFilter: int
+    numEntriesScannedPostFilter: int
+    numGroupsLimitReached: bool
+    numRowsResultSet: int
+    numSegmentsMatched: int
+    numSegmentsProcessed: int
+    numSegmentsPrunedByBroker: int
+    numSegmentsPrunedByLimit: int
+    numSegmentsPrunedByServer: int
+    numSegmentsPrunedByValue: int
+    numSegmentsPrunedInvalid: int
+    numSegmentsQueried: int
+    numServersQueried: int
+    numServersResponded: int
+    offlineResponseSerializationCpuTimeNs: int
+    offlineSystemActivitiesCpuTimeNs: int
+    offlineThreadCpuTimeNs: int
+    offlineTotalCpuTimeNs: int
+    partialResult: bool
+    realtimeResponseSerializationCpuTimeNs: int
+    realtimeSystemActivitiesCpuTimeNs: int
+    realtimeThreadCpuTimeNs: int
+    realtimeTotalCpuTimeNs: int
+    requestId: str
+    segmentStatistics: list
+    stageStats: dict
+    stateStats: dict
+    tablesQueried: list[str]
+    timeUsedMs: int
+    totalDocs: int
+    traceInfo: dict
+
+
+def _make_query_statistics(json_response: dict) -> QueryStatistics:
+    valid_keys = set(QueryStatistics.__annotations__.keys())
+    return t.cast(QueryStatistics, {key: json_response[key] for key in valid_keys if key in json_response})
 
 
 class BaseCursor(t.Generic[_ConnectionType, RowType]):
@@ -41,6 +144,7 @@ class BaseCursor(t.Generic[_ConnectionType, RowType]):
         "_rowcount",
         "_arraysize",
         "_last_query",
+        "_last_query_statistics",
         "_row_factory",
         "_convert_binary",
     )
@@ -59,6 +163,7 @@ class BaseCursor(t.Generic[_ConnectionType, RowType]):
         self._result_set: _BaseResultSet[RowType] = EmptyResultSet[RowType](row_factory)
         self._closed = False
         self._last_query: Query | None = None
+        self._last_query_statistics: QueryStatistics | None = None
 
         # noinspection PyProtectedMember
         if self not in connection._cursors:  # pragma: no branch
@@ -108,6 +213,11 @@ class BaseCursor(t.Generic[_ConnectionType, RowType]):
         """Last executed query"""
         return self._last_query.operation if self._last_query else None
 
+    @property
+    def query_statistics(self) -> QueryStatistics | None:
+        """Statistics about the last executed query"""
+        return self._last_query_statistics
+
     def _build_request(
         self,
         operation: str,
@@ -138,6 +248,7 @@ class BaseCursor(t.Generic[_ConnectionType, RowType]):
 
     def _handle_response(self, r: httpx.Response) -> httpx.Response:
         json_response = orjson.loads(r.content)
+
         if "resultTable" in json_response:
             self._handle_query_result(json_response)
         elif "exceptions" in json_response and json_response["exceptions"]:  # pragma: no branch
@@ -154,7 +265,15 @@ class BaseCursor(t.Generic[_ConnectionType, RowType]):
                 row[index] = converter(row[index])
             yield row
 
+    def _check_servers_responded(self, json_response: dict) -> None:
+        num_servers_responded = json_response.get("numServersResponded", -1)
+        num_servers_queried = json_response.get("numServersQueried", -1)
+        if num_servers_responded != num_servers_queried:
+            raise DatabaseError(f"Queried {num_servers_queried} server(s), but {num_servers_responded} responded")
+
     def _handle_query_result(self, json_response: dict) -> None:
+        self._check_servers_responded(json_response)
+
         rows = json_response["resultTable"]["rows"]
         types = json_response["resultTable"]["dataSchema"]["columnDataTypes"]
         self._result_set = ResultSet[RowType](
@@ -165,6 +284,7 @@ class BaseCursor(t.Generic[_ConnectionType, RowType]):
             arraysize=self._result_set.arraysize,  # copy arraysize from last result set
             row_factory=self._result_set._row_factory,
         )
+        self._last_query_statistics = _make_query_statistics(json_response)
 
     def _handle_query_exception(self, json_response: dict):
         # Yet to see more than one object in exception array, so making an assumption here...
