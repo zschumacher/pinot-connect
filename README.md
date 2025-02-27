@@ -1,5 +1,11 @@
 # pinot-connect
 
+[![codecov](https://codecov.io/gh/zschumacher/pinot-connect/graph/badge.svg?token=bQLhy9S1GT)](https://codecov.io/gh/zschumacher/pinot-connect)
+[![unit-tests](https://github.com/zschumacher/pinot-connect/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/zschumacher/pinot-connect/actions/workflows/unit-tests.yml)
+[![integration-tests](https://github.com/zschumacher/pinot-connect/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/zschumacher/pinot-connect/actions/workflows/integration-tests.yml)
+[![pages-build-deployment](https://github.com/zschumacher/pinot-connect/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/zschumacher/pinot-connect/actions/workflows/pages/pages-build-deployment)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Installation
 ```shell
 pip install pinot-connect

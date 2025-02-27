@@ -1,5 +1,4 @@
 modules:
-  pinot_connect: docs/reference/pinot_connect.md
   pinot_connect.connection: docs/reference/connection.md
   pinot_connect.cursor: docs/reference/cursor.md
   pinot_connect.exceptions: docs/reference/exceptions.md

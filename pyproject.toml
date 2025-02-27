@@ -7,13 +7,37 @@ authors = [
 ]
 license = {text = "MIT"}
 readme = "README.md"
-requires-python = ">=3.9,<4"
+requires-python = ">=3.9,<4.0"
 dependencies = [
     "httpx (>=0.23.0,<0.29.0)",
     "orjson (>=3.10.15,<4.0.0)",
     "ciso8601 (>=2.3.2,<3.0.0)"
 ]
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+    'Topic :: Database',
+    'Topic :: Database :: Database Engines/Servers',
+    "Typing :: Typed",
+]
 
+[project.urls]
+Homepage = "https://github.com/zschumacher/pinot-connect"
+Documentation = "https://pinot-connect.org/"
+Repository = "https://github.com/zschumacher/pinot-connect"
+Issues = "https://github.com/zschumacher/pinot-connect/issues"
+Changelog = "https://pinot-connect.org/release_notes"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
