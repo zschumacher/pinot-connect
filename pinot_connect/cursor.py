@@ -84,6 +84,7 @@ class QueryStatistics(t.TypedDict):
         totalDocs: The total number of documents in the queried segments.
         traceInfo: A dictionary containing tracing information for the query execution.
     """
+
     brokerId: str
     brokerReduceTimeMs: int
     explainPlanNumEmptyFilterSegments: int
@@ -131,7 +132,7 @@ class QueryStatistics(t.TypedDict):
 
 def _make_query_statistics(json_response: dict) -> QueryStatistics:
     valid_keys = set(QueryStatistics.__annotations__.keys())
-    return {key: json_response[key] for key in valid_keys if key in json_response}
+    return t.cast(QueryStatistics, {key: json_response[key] for key in valid_keys if key in json_response})
 
 
 class BaseCursor(t.Generic[_ConnectionType, RowType]):
