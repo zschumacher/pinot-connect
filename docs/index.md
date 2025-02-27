@@ -94,9 +94,8 @@ asynchronous usage.
   [**row factories documentation**](usage/row_factories.md) for details.
 
 - **Type Mapping**  
-  `pinot_connect` automatically converts Pinot data types to their Python equivalents. More details are available in the 
-  [**type conversion documentation**](usage/type_conversion.md).
+  `pinot_connect` automatically converts Pinot data types to their Python equivalents.
 
 - **Cursor Iteration & Fetch Methods**  
   You can iterate over results directly or use `fetchone()`, `fetchmany()`, `fetchall()`, and `scroll()`, following the 
-  DB-API spec. See the [**usage docs**](usage) or [**reference docs**](reference/cursor.md) for more details.
+  DB-API spec. See the [**usage docs**](usage/index.md) or [**reference docs**](reference/cursor.md) for more details.
