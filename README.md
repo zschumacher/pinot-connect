@@ -70,7 +70,7 @@ from pinot_connect.rows import dict_row
 import asyncio
 
 async def main():
-    async with pinot_connect.AsyncConnection.connect(hose="localhost") as conn:
+    async with pinot_connect.AsyncConnection.connect(host="localhost") as conn:
         async with conn.cursor(row_factory=dict_row) as cursor:
             await cursor.execute("select * from airlineStats limit 100")
             async for row in cursor:
